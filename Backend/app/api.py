@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+import pandas as pd
 
 app = FastAPI()
 
@@ -34,3 +35,11 @@ async def read_root() -> dict:
 @app.get("/todo", tags=["todos"])
 async def get_todos() -> dict:
     return { "data": todos }
+
+@app.post("/")
+async def upload_file(file: UploadFile = File(...)):
+    df = pd.read_csv(file.file).head()
+    print(df)
+    print("finished")
+    #return df
+    return {"filename": file.filename};
