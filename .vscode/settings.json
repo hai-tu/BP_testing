@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/home/haitu/.virtualenvs/nlp_testing/bin/python"
+    "python.pythonPath": "/home/haitu/.virtualenvs/nlp_testing/bin/python",
+    "python.linting.enabled": false
 }

@@ -1,65 +1,42 @@
 import React, {Component} from 'react';
 import './App.css';
 import axios from 'axios';
+import { render } from '@testing-library/react';
 
-let stateFile;
+//
 
-function App(){
+class App extends Component {
 
-  function handleFile(e){
-    const files = e.target.files[0];
-    stateFile = e.target.files[0];
-    //setState({file: file})
-    //console.log(e.target.files, "$$$$$")
-    //console.log(e.target.files[0], "$$$$$");
-
-  };
-
-  function handleUpload() {
-    const data = new FormData()
-    data.append('file', stateFile);
-    axios.post('http://localhost:8000/data', data);
-    //console.log(statefile, "The State ===== $$$$");
-  };
-  
-  /*
-  const { register, handleSubmit } = useForm()
-
-  const onSubmit = async (data) => {
-    //data.preventDefault();
-    const formData = new FormData()
-    formData.append("picture", data.picture)
-    axios.post('http://localhost:8000', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    */
-    /*
-    const res = await fetch("http://localhost:8000", {
-      method: "POST",
-      body: formData
-    }).then(res => res.json())
-    alert(JSON.stringify(res))
-    
-    
+  state = {
+    selectedFile: null
   }
-  */
 
-  return (
-    <form>
-      <label>Select File</label>
-      <input type="file" name="file" onChange={(e) => handleFile(e)} />
-      <button onClick={() => handleUpload()}>Submit</button>
-    </form>
+  fileSectedHandler = event => {
+    this.setState({
+      selectedFile: event.target.files[0]
+    })
+    //console.log(event.target.files[0]);
 
-    /*
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input ref={register} type="file" name="picture" />
-      <button>Submit</button>
-    </form>
-    */
-  );
+  }
+
+  fileUploadHandler = () => {
+    const data = new FormData();
+    data.append('file', this.state.selectedFile);
+    axios.post('http://localhost:8000/uploads', data, {onUploadProgress: ProgressEvent => {
+      console.log('Upload Progess: ' + Math.round(ProgressEvent.loaded/ProgressEvent.total * 100) + '%')
+    }
+  }).then(res => {
+        console.log(res);
+      });
+  }
+  render() {
+    return (
+      <div className="App">
+        <input type="file" onChange={this.fileSectedHandler} />
+        <button onClick={this.fileUploadHandler}>Upload</button>
+      </div>
+    )
+  }
 }
 
 

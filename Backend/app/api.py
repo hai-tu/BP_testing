@@ -1,19 +1,8 @@
+from app.data_processing import process
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-import pandas as pd
 
 app = FastAPI()
-
-todos = [
-    {
-        "id": "1",
-        "item": "Read a book."
-    },
-    {
-        "id": "2",
-        "item": "Cycle around town."
-    }
-]
 
 origins = [
     "http://localhost:3000",
@@ -32,14 +21,15 @@ app.add_middleware(
 async def read_root() -> dict:
     return {"message": "Welcome to your todo list."}
 
-@app.get("/todo", tags=["todos"])
-async def get_todos() -> dict:
-    return { "data": todos }
 
-@app.post("/")
+@app.post("/uploads")
 async def upload_file(file: UploadFile = File(...)):
-    df = pd.read_csv(file.file).head()
-    print(df)
-    print("finished")
-    #return df
-    return {"filename": file.filename};
+    infile=file.file
+    f = open("/home/haitu/Uni/BP_testing/Backend/app/dataout.txt", "wb")
+    lines = infile.readlines()
+    #print(type(lines[0]))
+    for  line in lines:
+        f.write(line)
+    f.close()
+    process()
+    return {"filename": file.filename}
