@@ -25,7 +25,7 @@ async def read_root() -> dict:
 @app.post("/uploads")
 async def upload_file(file: UploadFile = File(...)):
     infile=file.file
-    f = open("/home/haitu/Uni/BP_testing/Backend/app/dataout.txt", "wb")
+    f = open("dataout.txt", "wb")
     lines = infile.readlines()
     #print(type(lines[0]))
     for  line in lines:

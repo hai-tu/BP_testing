@@ -23,7 +23,7 @@ def get_class_colors(x, y, n_classes):
 
 def process():
     data = []
-    fname = "/home/haitu/Uni/BP_testing/Backend/app/dataout.txt"
+    fname = "dataout.txt"
     with open(fname, 'r') as lines:
         for line in lines:
             splits = line.strip().split('\t')
@@ -39,4 +39,4 @@ def process():
     for i, col in zip(sorted(x_dat.keys()),colorlist) :
         plt.scatter(x_dat[i], y_dat[i], color=col)
     plt.show()
-    plt.savefig("/home/haitu/Uni/BP_testing/Backend/app/graph.png")
+    plt.savefig("graph.png")
