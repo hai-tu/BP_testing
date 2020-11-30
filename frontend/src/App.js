@@ -27,10 +27,20 @@ function App() {
       });
   }
 
+  const graphHandler = () => {
+    axios.get('http://localhost:8000/sendjson').then((response)=>{
+      const dataOut = response.data
+      console.log(dataOut)
+    })
+  }
+
+  
+
     return (
       <div className="App">
         <input type="file" onChange={fileSectedHandler} />
         <button onClick={fileUploadHandler}>Upload</button>
+        <button onClick={graphHandler}>MakeGraph</button>
       </div>
     );
 }

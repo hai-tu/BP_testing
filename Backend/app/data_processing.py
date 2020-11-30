@@ -13,13 +13,26 @@ num_classes = 6
 
 def get_class_colors(x, y, n_classes):
     x_data, y_data = {i:[] for i in range(n_classes)},{i:[] for i in range(n_classes)}
-    #print(x_data, y_data)
     for feat, lab in zip(x,y):
-        #print(feat)
-        #print(lab)
         x_data[lab].append(feat[0])
         y_data[lab].append(feat[1])
     return x_data, y_data
+
+
+def to_Json():
+    x_data, y_data = process()
+    jsondata = {}
+    
+    for i in x_data.keys():
+        label = {}
+        x = x_data[i]
+        x = [float(j) for j in x]
+        y = y_data[i]
+        y = [float(j) for j in y]
+        label['x'] = x
+        label['y'] = y
+        jsondata[str(i)] = label
+    return jsondata
 
 def process():
     data = []
@@ -35,8 +48,11 @@ def process():
     tsne_reduced_features = TSNE(n_components=2,perplexity=50).fit_transform(x_features)
     x_dat, y_dat = get_class_colors(tsne_reduced_features, labels, num_classes)
 
-    plt.title("TSNE data")
+
+    """plt.title("TSNE data")
     for i, col in zip(sorted(x_dat.keys()),colorlist) :
         plt.scatter(x_dat[i], y_dat[i], color=col)
     plt.show()
-    plt.savefig("graph.png")
+    plt.savefig("graph.png")"""
+
+    return x_dat, y_dat
